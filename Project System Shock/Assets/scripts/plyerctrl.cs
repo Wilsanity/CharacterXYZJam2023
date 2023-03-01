@@ -15,11 +15,21 @@ public class plyerctrl : MonoBehaviour
   public float distance = 7f;
   public Transform ch;
   public Animator an;
+  public AudioSource[] asource;
   Vector3 ec;
   void Start()
 {
+  StartCoroutine(audiow());
   Application.targetFrameRate=60;
 }
+
+  IEnumerator audiow(){
+    yield return new WaitForSeconds(0.35f);
+    asource[Random.Range(0,2)].Play();
+    asource[0].volume = Mathf.Clamp(Mathf.Abs(Input.GetAxis("Horizontal"))+Mathf.Abs(Input.GetAxis("Vertical")),0,0.5f);
+    asource[1].volume = Mathf.Clamp(Mathf.Abs(Input.GetAxis("Horizontal"))+Mathf.Abs(Input.GetAxis("Vertical")),0,0.5f);
+    StartCoroutine(audiow());
+  }
   void Update()
   {
     Vector3 xh = ch.TransformDirection(new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"))/10*speed);
