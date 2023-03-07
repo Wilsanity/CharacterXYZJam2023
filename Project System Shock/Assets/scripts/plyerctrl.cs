@@ -14,6 +14,7 @@ public class plyerctrl : MonoBehaviour
   public float lerp = 0.2f;
   public float distance = 7f;
   public Transform ch;
+  public Transform hlook;
   public Animator an;
   public AudioSource[] asource;
   Vector3 ec;
@@ -32,7 +33,7 @@ public class plyerctrl : MonoBehaviour
   }
   void Update()
   {
-    Vector3 xh = ch.TransformDirection(new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"))/10*speed);
+    Vector3 xh = hlook.TransformDirection(new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical"))/10*speed);
     Vector3 grav = new Vector3(0,-7.97f/3*Time.deltaTime,0);
     if (Input.GetAxis("Mouse ScrollWheel") > 0){
       distance -=0.75f;
@@ -40,7 +41,7 @@ public class plyerctrl : MonoBehaviour
       distance +=0.75f;
     }
     if (xh != Vector3.zero){
-      ch.transform.localRotation=Quaternion.Lerp(ch.transform.localRotation,Quaternion.Euler(0, -45, 0),lerp);
+      ch.transform.rotation=Quaternion.Lerp(ch.transform.rotation,Quaternion.LookRotation(xh, Vector3.up),lerp);
     }
     an.SetFloat("walk",Mathf.Abs(xh.x)+Mathf.Abs(xh.z));
     CC.Move(xh);
